@@ -5,7 +5,7 @@ VisualStudioVersion = 17.14.37012.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KingdomLike", "KingdomLike.csproj", "{7317BA17-B3B4-429A-BD31-6F2E22ECE284}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGameLibrary", "..\MonoGameLibrary\MonoGameLibrary.csproj", "{C9B1DBF5-C128-4A84-98A6-B13745576E7B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGameLibrary", "..\MonoGame\MonoGameLibrary\MonoGameLibrary.csproj", "{7CA59289-FB40-179F-5962-946A01E2E6FB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{7317BA17-B3B4-429A-BD31-6F2E22ECE284}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7317BA17-B3B4-429A-BD31-6F2E22ECE284}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7317BA17-B3B4-429A-BD31-6F2E22ECE284}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C9B1DBF5-C128-4A84-98A6-B13745576E7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C9B1DBF5-C128-4A84-98A6-B13745576E7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C9B1DBF5-C128-4A84-98A6-B13745576E7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C9B1DBF5-C128-4A84-98A6-B13745576E7B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CA59289-FB40-179F-5962-946A01E2E6FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CA59289-FB40-179F-5962-946A01E2E6FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CA59289-FB40-179F-5962-946A01E2E6FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CA59289-FB40-179F-5962-946A01E2E6FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
