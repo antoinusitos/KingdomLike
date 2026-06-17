@@ -25,24 +25,25 @@ public class GameScene : Scene
 
         Rectangle screenBounds = Core.GraphicsDevice.PresentationParameters.Bounds;
 
-        if (_tilemap != null)
+        if (tilemap != null)
         {
             RoomBounds = new Rectangle(
-                 (int)_tilemap.TileWidth,
-                 (int)_tilemap.TileHeight,
-                 screenBounds.Width - (int)_tilemap.TileWidth * 2,
-                 screenBounds.Height - (int)_tilemap.TileHeight * 2
+                 (int)tilemap.TileWidth,
+                 (int)tilemap.TileHeight,
+                 screenBounds.Width - (int)tilemap.TileWidth * 2,
+                 screenBounds.Height - (int)tilemap.TileHeight * 2
              );
 
             // Initial slime position will be the center tile of the tile map.
-            int centerRow = _tilemap.Rows / 2;
-            int centerColumn = _tilemap.Columns / 2;
+            int centerRow = tilemap.Rows / 2;
+            int centerColumn = tilemap.Columns / 2;
         }
 
         DefaultGameGameManager.Instance.player = new Player("player");
         DefaultGameGameManager.Instance.player.LoadContent(Content);
         DefaultGameGameManager.Instance.player.Initialize();
         DefaultGameGameManager.Instance.player.Register();
+        DefaultGameGameManager.Instance.player.SetPosition(100, 100);
 
         InitializeUI();
 
@@ -52,10 +53,10 @@ public class GameScene : Scene
     public override void LoadContent()
     {
         // Create the tilemap from the XML configuration file.
-        _tilemap = RessourceManager.Instance.GetOrAddTilemap("images/tilemap-definition2.xml", out TilemapJSON tilemapJSON);
-        if (_tilemap != null)
+        tilemap = RessourceManager.Instance.GetOrAddTilemap("images/tilemap-definition2.xml", out TilemapJSON tilemapJSON);
+        if (tilemap != null)
         {
-            _tilemap.Scale = new Vector2(DefaultGameGameManager.GameScale, DefaultGameGameManager.GameScale);
+            tilemap.Scale = new Vector2(DefaultGameGameManager.GameScale, DefaultGameGameManager.GameScale);
         }
     }
 
@@ -132,9 +133,9 @@ public class GameScene : Scene
     public override void Draw(float deltaTime)
     {
         // Draw the tilemap
-        if (_tilemap != null)
+        if (tilemap != null)
         {
-            _tilemap.Draw(Core.SpriteBatch);
+            tilemap.Draw(Core.SpriteBatch);
         }
     }
 

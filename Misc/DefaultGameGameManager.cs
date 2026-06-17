@@ -7,12 +7,12 @@ namespace DefaultGame.Misc;
 
 public class DefaultGameGameManager : GameManager
 {
-    internal static DefaultGameGameManager s_instance;
+    internal static DefaultGameGameManager instance;
 
     /// <summary>
     /// Gets a reference to the Core instance.
     /// </summary>
-    public static DefaultGameGameManager Instance => s_instance;
+    public static DefaultGameGameManager Instance => instance;
 
     public bool paused = false;
 
@@ -21,13 +21,13 @@ public class DefaultGameGameManager : GameManager
     public DefaultGameGameManager() : base()
     {
         // Ensure that multiple cores are not created.
-        if (s_instance != null)
+        if (instance != null)
         {
             throw new InvalidOperationException($"Only a single DefaultGameGameManager instance can be created");
         }
 
         // Store reference to engine for global member access.
-        s_instance = this;
+        instance = this;
 
         GameScale = 2;
     }

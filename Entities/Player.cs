@@ -2,6 +2,10 @@
 using Microsoft.Xna.Framework.Content;
 using MonoGameLibrary.Entities;
 using MonoGameLibrary.Input;
+using MonoGameLibrary.Shapes;
+using MonoGameLibrary.Misc;
+using MonoGameLibrary.Graphics;
+using MonoGameLibrary.Managers;
 
 namespace DefaultGame.Entities;
 
@@ -15,12 +19,28 @@ public class Player : PlayerCharacter
     {
         base.Initialize();
 
-        _canUpdate = true;
+        canUpdate = true;
+        canCollide = true;
+        canRender = true;
+        canMove = true;
+        canInteract = true;
+        collisionType = CollisionType.DYNAMIC;
+
+        collider = new Box(
+            position.X,
+            position.Y,
+            sprite.Width,
+            sprite.Height
+        );
     }
 
     public override void LoadContent(ContentManager content)
     {
         base.LoadContent(content);
+
+        TextureAtlas atlas2 = RessourceManager.Instance.GetOrAddTextureAtlas("images/atlas-definition2.xml");
+
+        sprite = RessourceManager.Instance.GetOrAddSprite("player", atlas2);
     }
 
     public override void Update(float deltaTime)

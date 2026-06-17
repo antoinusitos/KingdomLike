@@ -10,7 +10,7 @@ namespace DefaultGame;
 
 public class Game1 : Core
 {
-    private DefaultGameGameManager _gameManager;
+    private DefaultGameGameManager gameManager;
 
     public Game1() : base("Kingdom Like (Leaf Engine)", 1920, 1080, false)
     {
@@ -21,7 +21,7 @@ public class Game1 : Core
     {
         base.Initialize();
 
-        _gameManager = new DefaultGameGameManager();
+        gameManager = new DefaultGameGameManager();
 
         // Initialize the Gum UI service
         InitializeGum();

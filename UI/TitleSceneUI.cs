@@ -20,95 +20,95 @@ public class TitleSceneUI : UIEntity
     private const string PRESS_ENTER_TEXT = "Press Enter To Start";
 
     // The font to use to render normal text.
-    private SpriteFont _font;
+    private SpriteFont font;
 
     // The font used to render the title text.
-    private SpriteFont _font5x;
+    private SpriteFont font5x;
 
     // The position to draw the dungeon text at.
-    private Vector2 _titleTextPos;
+    private Vector2 titleTextPos;
 
     // The origin to set for the dungeon text.
-    private Vector2 _titleTextOrigin;
+    private Vector2 titleTextOrigin;
 
     // The position to draw the press enter text at.
-    private Vector2 _pressEnterPos;
+    private Vector2 pressEnterPos;
 
     // The origin to set for the press enter text when drawing it.
-    private Vector2 _pressEnterOrigin;
+    private Vector2 pressEnterOrigin;
 
     // The texture used for the background pattern.
-    private Texture2D _backgroundPattern;
+    private Texture2D backgroundPattern;
 
     // The destination rectangle for the background pattern to fill.
-    private Rectangle _backgroundDestination;
+    private Rectangle backgroundDestination;
 
     // The offset to apply when drawing the background pattern so it appears to
     // be scrolling.
-    private Vector2 _backgroundOffset;
+    private Vector2 backgroundOffset;
 
     // The speed that the background pattern scrolls.
-    private float _scrollSpeed = 50.0f;
+    private float scrollSpeed = 50.0f;
 
-    private SoundEffect _uiSoundEffect;
-    private Panel _titleScreenButtonsPanel;
-    private Panel _optionsPanel;
+    private SoundEffect uiSoundEffect;
+    private Panel titleScreenButtonsPanel;
+    private Panel optionsPanel;
 
     // The options button used to open the options menu.
-    private AnimatedButton _optionsButton;
+    private AnimatedButton optionsButton;
 
     // The back button used to exit the options menu back to the title menu.
-    private AnimatedButton _optionsBackButton;
+    private AnimatedButton optionsBackButton;
 
     // Reference to the texture atlas that we can pass to UI elements when they
     // are created.
-    private TextureAtlas _atlas;
+    private TextureAtlas atlas;
 
     // The background theme song.
-    private Song _themeSong;
+    private Song themeSong;
 
     public override void LoadContent(ContentManager content)
     {
         base.LoadContent(content);
 
         // Load the font for the standard text.
-        _font = RessourceManager.Instance.GetOrAddSpriteFont("fonts/04B_30");
+        font = RessourceManager.Instance.GetOrAddSpriteFont("fonts/04B_30");
 
         // Load the font for the title text.
-        _font5x = RessourceManager.Instance.GetOrAddSpriteFont("fonts/04B_30_5x");
+        font5x = RessourceManager.Instance.GetOrAddSpriteFont("fonts/04B_30_5x");
 
         // Load the background pattern texture.
-        _backgroundPattern = RessourceManager.Instance.GetOrAddTexture2D("images/background-pattern");
+        backgroundPattern = RessourceManager.Instance.GetOrAddTexture2D("images/background-pattern");
 
         // Load the sound effect to play when ui actions occur.
-        _uiSoundEffect = RessourceManager.Instance.GetOrAddSoundEffect("audio/ui");
+        uiSoundEffect = RessourceManager.Instance.GetOrAddSoundEffect("audio/ui");
 
         // Load the texture atlas from the xml configuration file.
-        _atlas = RessourceManager.Instance.GetOrAddTextureAtlas("images/atlas-definition.xml");
+        atlas = RessourceManager.Instance.GetOrAddTextureAtlas("images/atlas-definition.xml");
 
         // Load the background theme music.
-        _themeSong = RessourceManager.Instance.GetOrAddSong("audio/theme");
+        themeSong = RessourceManager.Instance.GetOrAddSong("audio/theme");
 
         // While on the title screen, we can enable exit on escape so the player
         // can close the game by pressing the escape key.
         Core.ExitOnEscape = true;
 
         // Set the position and origin for the Dungeon text.
-        Vector2 size = _font5x.MeasureString(TITLE_TEXT);
-        _titleTextPos = new Vector2(640, 100);
-        _titleTextOrigin = size * 0.5f;
+        Vector2 size = font5x.MeasureString(TITLE_TEXT);
+        titleTextPos = new Vector2(640, 100);
+        titleTextOrigin = size * 0.5f;
 
         // Set the position and origin for the press enter text.
-        size = _font.MeasureString(PRESS_ENTER_TEXT);
-        _pressEnterPos = new Vector2(640, 420);
-        _pressEnterOrigin = size * 0.5f;
+        size = font.MeasureString(PRESS_ENTER_TEXT);
+        pressEnterPos = new Vector2(640, 420);
+        pressEnterOrigin = size * 0.5f;
 
         // Initialize the offset of the background pattern at zero.
-        _backgroundOffset = Vector2.Zero;
+        backgroundOffset = Vector2.Zero;
 
         // Set the background pattern destination rectangle to fill the entire
         // screen background.
-        _backgroundDestination = Core.GraphicsDevice.PresentationParameters.Bounds;
+        backgroundDestination = Core.GraphicsDevice.PresentationParameters.Bounds;
 
         // Start playing the background music.
         //Core.Audio.PlaySong(_themeSong);
@@ -120,10 +120,10 @@ public class TitleSceneUI : UIEntity
 
         // Draw the background pattern first using the PointWrap sampler state.
         Core.SpriteBatch.Begin(samplerState: SamplerState.PointWrap);
-        Core.SpriteBatch.Draw(_backgroundPattern, _backgroundDestination, new Rectangle(_backgroundOffset.ToPoint(), _backgroundDestination.Size), Color.White * 0.5f);
+        Core.SpriteBatch.Draw(backgroundPattern, backgroundDestination, new Rectangle(backgroundOffset.ToPoint(), backgroundDestination.Size), Color.White * 0.5f);
         Core.SpriteBatch.End();
 
-        if (_titleScreenButtonsPanel.IsVisible)
+        if (titleScreenButtonsPanel.IsVisible)
         {
             // Begin the sprite batch to prepare for rendering.
             Core.SpriteBatch.Begin(samplerState: SamplerState.PointClamp);
@@ -133,17 +133,17 @@ public class TitleSceneUI : UIEntity
 
             // Draw the title text slightly offset from it is original position and
             // with a transparent color to give it a drop shadow
-            Core.SpriteBatch.DrawString(_font5x, TITLE_TEXT, _titleTextPos + new Vector2(10, 10), dropShadowColor, 0.0f, _titleTextOrigin, 1.0f, SpriteEffects.None, 1.0f);
+            Core.SpriteBatch.DrawString(font5x, TITLE_TEXT, titleTextPos + new Vector2(10, 10), dropShadowColor, 0.0f, titleTextOrigin, 1.0f, SpriteEffects.None, 1.0f);
 
             // Draw the title text on top of that at its original position
-            Core.SpriteBatch.DrawString(_font5x, TITLE_TEXT, _titleTextPos, Color.White, 0.0f, _titleTextOrigin, 1.0f, SpriteEffects.None, 1.0f);
+            Core.SpriteBatch.DrawString(font5x, TITLE_TEXT, titleTextPos, Color.White, 0.0f, titleTextOrigin, 1.0f, SpriteEffects.None, 1.0f);
 
             // Draw the Slime text slightly offset from it is original position and
             // with a transparent color to give it a drop shadow
-            Core.SpriteBatch.DrawString(_font, PRESS_ENTER_TEXT, _pressEnterPos + new Vector2(10, 10), dropShadowColor, 0.0f, _pressEnterOrigin, 1.0f, SpriteEffects.None, 1.0f);
+            Core.SpriteBatch.DrawString(font, PRESS_ENTER_TEXT, pressEnterPos + new Vector2(10, 10), dropShadowColor, 0.0f, pressEnterOrigin, 1.0f, SpriteEffects.None, 1.0f);
 
             // Draw the Slime text on top of that at its original position
-            Core.SpriteBatch.DrawString(_font, PRESS_ENTER_TEXT, _pressEnterPos, Color.White, 0.0f, _pressEnterOrigin, 1.0f, SpriteEffects.None, 1.0f);
+            Core.SpriteBatch.DrawString(font, PRESS_ENTER_TEXT, pressEnterPos, Color.White, 0.0f, pressEnterOrigin, 1.0f, SpriteEffects.None, 1.0f);
 
             // Always end the sprite batch when finished.
             Core.SpriteBatch.End();
@@ -155,27 +155,27 @@ public class TitleSceneUI : UIEntity
     public void CreateTitlePanel()
     {
         // Create a container to hold all of our buttons
-        _titleScreenButtonsPanel = new Panel();
-        _titleScreenButtonsPanel.Dock(Gum.Wireframe.Dock.Fill);
-        _titleScreenButtonsPanel.AddToRoot();
+        titleScreenButtonsPanel = new Panel();
+        titleScreenButtonsPanel.Dock(Gum.Wireframe.Dock.Fill);
+        titleScreenButtonsPanel.AddToRoot();
 
-        AnimatedButton startButton = new AnimatedButton(_atlas);
+        AnimatedButton startButton = new AnimatedButton(atlas);
         startButton.Anchor(Gum.Wireframe.Anchor.BottomLeft);
         startButton.X = 50;
         startButton.Y = -12;
         startButton.Width = 70;
         startButton.Text = "Start";
         startButton.Click += HandleStartClicked;
-        _titleScreenButtonsPanel.AddChild(startButton);
+        titleScreenButtonsPanel.AddChild(startButton);
 
-        _optionsButton = new AnimatedButton(_atlas);
-        _optionsButton.Anchor(Gum.Wireframe.Anchor.BottomRight);
-        _optionsButton.X = -50;
-        _optionsButton.Y = -12;
-        _optionsButton.Width = 70;
-        _optionsButton.Text = "Options";
-        _optionsButton.Click += HandleOptionsClicked;
-        _titleScreenButtonsPanel.AddChild(_optionsButton);
+        optionsButton = new AnimatedButton(atlas);
+        optionsButton.Anchor(Gum.Wireframe.Anchor.BottomRight);
+        optionsButton.X = -50;
+        optionsButton.Y = -12;
+        optionsButton.Width = 70;
+        optionsButton.Text = "Options";
+        optionsButton.Click += HandleOptionsClicked;
+        titleScreenButtonsPanel.AddChild(optionsButton);
 
         startButton.IsFocused = true;
     }
@@ -183,7 +183,7 @@ public class TitleSceneUI : UIEntity
     private void HandleStartClicked(object sender, EventArgs e)
     {
         // A UI interaction occurred, play the sound effect
-        Core.Audio.PlaySoundEffect(_uiSoundEffect);
+        Core.Audio.PlaySoundEffect(uiSoundEffect);
 
         // Change to the game scene to start the game.
         SceneManager.Instance.ChangeScene(new GameScene());
@@ -192,24 +192,24 @@ public class TitleSceneUI : UIEntity
     private void HandleOptionsClicked(object sender, EventArgs e)
     {
         // A UI interaction occurred, play the sound effect
-        Core.Audio.PlaySoundEffect(_uiSoundEffect);
+        Core.Audio.PlaySoundEffect(uiSoundEffect);
 
         // Set the title panel to be invisible.
-        _titleScreenButtonsPanel.IsVisible = false;
+        titleScreenButtonsPanel.IsVisible = false;
 
         // Set the options panel to be visible.
-        _optionsPanel.IsVisible = true;
+        optionsPanel.IsVisible = true;
 
         // Give the back button on the options panel focus.
-        _optionsBackButton.IsFocused = true;
+        optionsBackButton.IsFocused = true;
     }
 
     public void CreateOptionsPanel()
     {
-        _optionsPanel = new Panel();
-        _optionsPanel.Dock(Gum.Wireframe.Dock.Fill);
-        _optionsPanel.IsVisible = false;
-        _optionsPanel.AddToRoot();
+        optionsPanel = new Panel();
+        optionsPanel.Dock(Gum.Wireframe.Dock.Fill);
+        optionsPanel.IsVisible = false;
+        optionsPanel.AddToRoot();
 
         TextRuntime optionsText = new TextRuntime();
         optionsText.X = 10;
@@ -218,9 +218,9 @@ public class TitleSceneUI : UIEntity
         optionsText.UseCustomFont = true;
         optionsText.FontScale = 0.5f;
         optionsText.CustomFontFile = @"fonts/04b_30.fnt";
-        _optionsPanel.AddChild(optionsText);
+        optionsPanel.AddChild(optionsText);
 
-        OptionsSlider musicSlider = new OptionsSlider(_atlas);
+        OptionsSlider musicSlider = new OptionsSlider(atlas);
         musicSlider.Name = "MusicSlider";
         musicSlider.Text = "MUSIC";
         musicSlider.Anchor(Gum.Wireframe.Anchor.Top);
@@ -232,9 +232,9 @@ public class TitleSceneUI : UIEntity
         musicSlider.LargeChange = .2;
         musicSlider.ValueChanged += HandleMusicSliderValueChanged;
         musicSlider.ValueChangeCompleted += HandleMusicSliderValueChangeCompleted;
-        _optionsPanel.AddChild(musicSlider);
+        optionsPanel.AddChild(musicSlider);
 
-        OptionsSlider sfxSlider = new OptionsSlider(_atlas);
+        OptionsSlider sfxSlider = new OptionsSlider(atlas);
         sfxSlider.Name = "SfxSlider";
         sfxSlider.Text = "SFX";
         sfxSlider.Anchor(Gum.Wireframe.Anchor.Top);
@@ -246,15 +246,15 @@ public class TitleSceneUI : UIEntity
         sfxSlider.LargeChange = .2;
         sfxSlider.ValueChanged += HandleSfxSliderChanged;
         sfxSlider.ValueChangeCompleted += HandleSfxSliderChangeCompleted;
-        _optionsPanel.AddChild(sfxSlider);
+        optionsPanel.AddChild(sfxSlider);
 
-        _optionsBackButton = new AnimatedButton(_atlas);
-        _optionsBackButton.Text = "BACK";
-        _optionsBackButton.Anchor(Gum.Wireframe.Anchor.BottomRight);
-        _optionsBackButton.X = -28f;
-        _optionsBackButton.Y = -10f;
-        _optionsBackButton.Click += HandleOptionsButtonBack;
-        _optionsPanel.AddChild(_optionsBackButton);
+        optionsBackButton = new AnimatedButton(atlas);
+        optionsBackButton.Text = "BACK";
+        optionsBackButton.Anchor(Gum.Wireframe.Anchor.BottomRight);
+        optionsBackButton.X = -28f;
+        optionsBackButton.Y = -10f;
+        optionsBackButton.Click += HandleOptionsButtonBack;
+        optionsPanel.AddChild(optionsBackButton);
     }
 
     private void HandleSfxSliderChanged(object sender, EventArgs args)
@@ -273,7 +273,7 @@ public class TitleSceneUI : UIEntity
     private void HandleSfxSliderChangeCompleted(object sender, EventArgs e)
     {
         // Play the UI Sound effect so the player can hear the difference in audio.
-        Core.Audio.PlaySoundEffect(_uiSoundEffect);
+        Core.Audio.PlaySoundEffect(uiSoundEffect);
     }
 
     private void HandleMusicSliderValueChanged(object sender, EventArgs args)
@@ -292,23 +292,23 @@ public class TitleSceneUI : UIEntity
     private void HandleMusicSliderValueChangeCompleted(object sender, EventArgs args)
     {
         // A UI interaction occurred, play the sound effect
-        Core.Audio.PlaySoundEffect(_uiSoundEffect);
+        Core.Audio.PlaySoundEffect(uiSoundEffect);
     }
 
     private void HandleOptionsButtonBack(object sender, EventArgs e)
     {
         // A UI interaction occurred, play the sound effect
-        Core.Audio.PlaySoundEffect(_uiSoundEffect);
+        Core.Audio.PlaySoundEffect(uiSoundEffect);
 
         // Set the title panel to be visible.
-        _titleScreenButtonsPanel.IsVisible = true;
+        titleScreenButtonsPanel.IsVisible = true;
 
         // Set the options panel to be invisible.
-        _optionsPanel.IsVisible = false;
+        optionsPanel.IsVisible = false;
 
         // Give the options button on the title panel focus since we are coming
         // back from the options screen.
-        _optionsButton.IsFocused = true;
+        optionsButton.IsFocused = true;
     }
 
     public override void Update(float deltaTime)
@@ -316,14 +316,14 @@ public class TitleSceneUI : UIEntity
 
         // Update the offsets for the background pattern wrapping so that it
         // scrolls down and to the right.
-        float offset = _scrollSpeed * deltaTime;
-        _backgroundOffset.X -= offset;
-        _backgroundOffset.Y -= offset;
+        float offset = scrollSpeed * deltaTime;
+        backgroundOffset.X -= offset;
+        backgroundOffset.Y -= offset;
 
         // Ensure that the offsets do not go beyond the texture bounds so it is
         // a seamless wrap.
-        _backgroundOffset.X %= _backgroundPattern.Width;
-        _backgroundOffset.Y %= _backgroundPattern.Height;
+        backgroundOffset.X %= backgroundPattern.Width;
+        backgroundOffset.Y %= backgroundPattern.Height;
 
         GumService.Default.Update(TimeManager.Instance.gameTime);
     }

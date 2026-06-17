@@ -15,18 +15,18 @@ namespace DefaultGame.UI;
 public class OptionsSlider : Slider
 {
     // Reference to the text label that displays the slider's title
-    private TextRuntime _textInstance;
+    private TextRuntime textInstance;
 
     // Reference to the rectangle that visually represents the current value
-    private ColoredRectangleRuntime _fillRectangle;
+    private ColoredRectangleRuntime fillRectangle;
 
     /// <summary>
     /// Gets or sets the text label for this slider.
     /// </summary>
     public string Text
     {
-        get => _textInstance.Text;
-        set => _textInstance.Text = value;
+        get => textInstance.Text;
+        set => textInstance.Text = value;
     }
 
     /// <summary>
@@ -54,15 +54,15 @@ public class OptionsSlider : Slider
         topLevelContainer.AddChild(background);
 
         // Create the title text element
-        _textInstance = new TextRuntime();
-        _textInstance.CustomFontFile = @"fonts/04b_30.fnt";
-        _textInstance.UseCustomFont = true;
-        _textInstance.FontScale = 0.5f;
-        _textInstance.Text = "Replace Me";
-        _textInstance.X = 10f;
-        _textInstance.Y = 10f;
-        _textInstance.WidthUnits = DimensionUnitType.RelativeToChildren;
-        topLevelContainer.AddChild(_textInstance);
+        textInstance = new TextRuntime();
+        textInstance.CustomFontFile = @"fonts/04b_30.fnt";
+        textInstance.UseCustomFont = true;
+        textInstance.FontScale = 0.5f;
+        textInstance.Text = "Replace Me";
+        textInstance.X = 10f;
+        textInstance.Y = 10f;
+        textInstance.WidthUnits = DimensionUnitType.RelativeToChildren;
+        topLevelContainer.AddChild(textInstance);
 
         // Create the container for the slider track and decorative elements
         ContainerRuntime innerContainer = new ContainerRuntime();
@@ -128,11 +128,11 @@ public class OptionsSlider : Slider
         middleBackground.AddChild(trackInstance);
 
         // Create the fill rectangle that visually displays the current value
-        _fillRectangle = new ColoredRectangleRuntime();
-        _fillRectangle.Dock(Gum.Wireframe.Dock.Left);
-        _fillRectangle.Width = 90f; // Default to 90% - will be updated by value changes
-        _fillRectangle.WidthUnits = DimensionUnitType.PercentageOfParent;
-        trackInstance.AddChild(_fillRectangle);
+        fillRectangle = new ColoredRectangleRuntime();
+        fillRectangle.Dock(Gum.Wireframe.Dock.Left);
+        fillRectangle.Width = 90f; // Default to 90% - will be updated by value changes
+        fillRectangle.WidthUnits = DimensionUnitType.PercentageOfParent;
+        trackInstance.AddChild(fillRectangle);
 
         // Add "OFF" text to the left end
         TextRuntime offText = new TextRuntime();
@@ -174,11 +174,11 @@ public class OptionsSlider : Slider
         {
             // When enabled but not focused, use gray coloring for all elements
             background.Color = unfocusedColor;
-            _textInstance.Color = unfocusedColor;
+            textInstance.Color = unfocusedColor;
             offBackground.Color = unfocusedColor;
             middleBackground.Color = unfocusedColor;
             maxBackground.Color = unfocusedColor;
-            _fillRectangle.Color = unfocusedColor;
+            fillRectangle.Color = unfocusedColor;
         };
         sliderCategory.States.Add(enabled);
 
@@ -189,11 +189,11 @@ public class OptionsSlider : Slider
         {
             // When focused, use white coloring for all elements
             background.Color = focusedColor;
-            _textInstance.Color = focusedColor;
+            textInstance.Color = focusedColor;
             offBackground.Color = focusedColor;
             middleBackground.Color = focusedColor;
             maxBackground.Color = focusedColor;
-            _fillRectangle.Color = focusedColor;
+            fillRectangle.Color = focusedColor;
         };
         sliderCategory.States.Add(focused);
 
@@ -246,6 +246,6 @@ public class OptionsSlider : Slider
 
         // Update the fill rectangle width as a percentage
         // _fillRectangle uses percentage width units, so we multiply by 100
-        _fillRectangle.Width = 100 * (float)ratio;
+        fillRectangle.Width = 100 * (float)ratio;
     }
 }
