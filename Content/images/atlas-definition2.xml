@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas>
+    <Texture>images/Atlas_Zog</Texture>
+    <Regions>
+      <Region name="butterfly-1" x="192" y="0" width="32" height="32" />
+      <Region name="butterfly-2" x="224" y="0" width="32" height="32" />
+    </Regions>
+    <Animations>
+      <Animation name="butterfly-animation" delay="200">
+        <Frame region="butterfly-1" />
+        <Frame region="butterfly-2" />
+      </Animation>
+    </Animations>
+</TextureAtlas>

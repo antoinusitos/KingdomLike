@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas>
+    <Texture>images/xbox-series_sheet_default</Texture>
+    <Regions>
+      <Region name="x" x="448" y="512" width="64" height="64" />
+    </Regions>
+    <Animations>
+    </Animations>
+</TextureAtlas>

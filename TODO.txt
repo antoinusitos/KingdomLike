@@ -1,0 +1,6 @@
+TODO :
+- 3, 2, 1, go counter
+- shoot
+- equipment
+- ai
+- 
