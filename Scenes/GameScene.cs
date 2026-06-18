@@ -44,7 +44,7 @@ public class GameScene : Scene
         DefaultGameGameManager.Instance.player.LoadContent(Content);
         DefaultGameGameManager.Instance.player.Initialize();
         DefaultGameGameManager.Instance.player.Register();
-        DefaultGameGameManager.Instance.player.SetPosition(100, 100);
+        DefaultGameGameManager.Instance.player.SetPosition(100, 75);
 
         for (int i = 0; i < 20; i++)
         {
