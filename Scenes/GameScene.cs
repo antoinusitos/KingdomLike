@@ -9,6 +9,7 @@ using MonoGameLibrary.Managers;
 using DefaultGame.Entities;
 using DefaultGame.Misc;
 using MonoGameLibrary.Graphics;
+using KingdomLike.Entities;
 
 namespace DefaultGame.Scenes;
 
@@ -44,6 +45,15 @@ public class GameScene : Scene
         DefaultGameGameManager.Instance.player.Initialize();
         DefaultGameGameManager.Instance.player.Register();
         DefaultGameGameManager.Instance.player.SetPosition(100, 100);
+
+        for (int i = 0; i < 20; i++)
+        {
+            Floor floor = new Floor("Floor");
+            floor.LoadContent(Content);
+            floor.Initialize();
+            floor.Register();
+            floor.SetPosition(i * 16, 116);
+        }
 
         InitializeUI();
 

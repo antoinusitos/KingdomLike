@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Input;
 using MonoGameLibrary.Entities;
 using MonoGameLibrary.Input;
 using MonoGameLibrary.Shapes;
@@ -11,6 +12,8 @@ namespace DefaultGame.Entities;
 
 public class Player : PlayerCharacter
 {
+    private float moveSpeed = 75;
+
     public Player(string name) : base(name)
     {
     }
@@ -63,6 +66,15 @@ public class Player : PlayerCharacter
     {
         // Get a reference to the keyboard inof
         KeyboardInfo keyboard = InputManager.Instance.Keyboard;
+
+        if (keyboard.IsKeyDown(Keys.D))
+        {
+            SetPosition(position + Vector2.UnitX * deltaTime * moveSpeed);
+        }
+        else if (keyboard.IsKeyDown(Keys.A))
+        {
+            SetPosition(position - Vector2.UnitX * deltaTime * moveSpeed);
+        }
     }
 
     private void CheckGamePadInput(float deltaTime)
