@@ -1,2 +1,2 @@
-﻿using var game = new DefaultGame.Game1();
+﻿using var game = new KingdomLike.Game1();
 game.Run();

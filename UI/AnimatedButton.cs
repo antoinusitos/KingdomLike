@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Input;
 using MonoGameGum.GueDeriving;
 using MonoGameLibrary.Graphics;
 
-namespace DefaultGame.UI;
+namespace KingdomLike.UI;
 
 /// <summary>
 /// A custom button implementation that inherits from Gum's Button class to provide

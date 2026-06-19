@@ -1,11 +1,11 @@
-﻿using DefaultGame.UI;
+﻿using KingdomLike.UI;
 using Microsoft.Xna.Framework.Input;
 using MonoGameGum;
 using MonoGameLibrary.Scenes;
 using MonoGameLibrary.Managers;
 using MonoGameLibrary.Input;
 
-namespace DefaultGame.Scenes;
+namespace KingdomLike.Scenes;
 
 public class TitleScene : Scene
 {

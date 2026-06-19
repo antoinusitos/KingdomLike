@@ -9,18 +9,33 @@ using MonoGameLibrary.Graphics;
 using MonoGameLibrary.Managers;
 using MonoGameLibrary;
 using System.Collections.Generic;
+using MonoGameLibrary.Utils;
+using MonoGameLibrary.Interfaces;
+using System;
+using KingdomLike.Misc;
 
-namespace DefaultGame.Entities;
+namespace KingdomLike.Entities;
 
 public class Player : PlayerCharacter
 {
     private float moveSpeed = 90;
+    private const float acceleration = 1000;
+    private const float friction = 400;
     private float jumpSpeed = 300;
 
     private bool isGrounded = false;
     private List<Entity> floorEntities = new List<Entity>();
 
     private Trigger floorTrigger;
+
+    private Trigger trigger;
+
+    private InteractionPlayerFeedback interaction = null;
+
+    private const string InteractionType = "IInteractable";
+
+    public ShootingStats shootingStats;
+    private bool mustShoot = false;
 
     public Player(string name) : base(name)
     {
@@ -45,7 +60,12 @@ public class Player : PlayerCharacter
             sprite.Height
         );
 
-        floorTrigger = new Trigger(_entityName + " Floor Trigger");
+        shootingStats.canShoot = true;
+        shootingStats.fireRate = 0.2f;
+
+        SetLayer(1);
+
+        floorTrigger = new Trigger(entityName + " Floor Trigger");
         floorTrigger.LoadContent(Core.Content);
         floorTrigger.Initialize();
         floorTrigger.AttachTo(this);
@@ -58,6 +78,36 @@ public class Player : PlayerCharacter
         floorTrigger.Register();
         floorTrigger.onTriggerEnter += OnTriggerEnter;
         floorTrigger.onTriggerExit += OnTriggerExit;
+
+        trigger = new Trigger(entityName + " Trigger");
+        trigger.LoadContent(Core.Content);
+        trigger.Initialize();
+        trigger.AttachTo(this);
+        trigger.SetRelativePosition(-trigger.Collider.Width + 52, -trigger.Collider.Height + 52);
+        trigger.SetPosition(position);
+        trigger.Register();
+
+        interaction = new InteractionPlayerFeedback("Interaction");
+        interaction.LoadContent(Core.Content);
+        interaction.Initialize();
+        interaction.AttachTo(this);
+        interaction.Register();
+        interaction.SetRelativePosition(0, -20);
+        interaction.SetPosition(position);
+        interaction.SetScale(0.25f);
+        interaction.SetActive(false);
+
+        floorTrigger.IgnoreCollisions.Add(interaction);
+        floorTrigger.IgnoreCollisions.Add(trigger);
+        floorTrigger.IgnoreCollisions.Add(this);
+
+        interaction.IgnoreCollisions.Add(floorTrigger);
+        interaction.IgnoreCollisions.Add(trigger);
+        interaction.IgnoreCollisions.Add(this);
+
+        trigger.IgnoreCollisions.Add(floorTrigger);
+        trigger.IgnoreCollisions.Add(interaction);
+        trigger.IgnoreCollisions.Add(this);
     }
 
     public override void LoadContent(ContentManager content)
@@ -78,6 +128,47 @@ public class Player : PlayerCharacter
         CheckKeyboardInput(deltaTime);
         CheckGamePadInput(deltaTime);
         CheckMouseInput(deltaTime);
+
+        Velocity.X = Approach(Velocity.X, 0, friction * deltaTime);
+
+        if (Velocity != Vector2.Zero)
+        {
+            SceneManager.Instance.SetIsDirty(true);
+        }
+
+        CheckInteraction();
+
+        CheckShoot(deltaTime);
+    }
+
+    private void CheckShoot(float deltaTime)
+    {
+        if (!shootingStats.canShoot)
+        {
+            shootingStats.currentWait += deltaTime;
+            if (shootingStats.currentWait >= shootingStats.fireRate)
+            {
+                shootingStats.currentWait = 0;
+                shootingStats.canShoot = true;
+            }
+            return;
+        }
+
+        if (!mustShoot)
+        {
+            return;
+        }
+
+        shootingStats.canShoot = false;
+
+        Bullet bullet = new Bullet("Bullet");
+        bullet.LoadContent(Core.Content);
+        bullet.Initialize();
+        bullet.SetPosition(position);
+        bullet.Register();
+        bullet.SetOwner(this);
+        bullet.SetSpeed(7);
+        bullet.SetDirection(Vector2.UnitX);
     }
 
     private void CheckMouseInput(float deltaTime)
@@ -97,13 +188,28 @@ public class Player : PlayerCharacter
             Jump();
         }
 
+        float inputX = 0;
+
+        // If the A or Left keys are down, move the slime left on the screen.
+        if (keyboard.IsKeyDown(Keys.A))
+        {
+            inputX = -1;
+        }
+
+        // If the D or Right keys are down, move the slime right on the screen.
         if (keyboard.IsKeyDown(Keys.D))
         {
-            SetPosition(position + Vector2.UnitX * deltaTime * moveSpeed);
+            inputX = 1;
         }
-        else if (keyboard.IsKeyDown(Keys.A))
+
+        if (inputX != 0)
         {
-            SetPosition(position - Vector2.UnitX * deltaTime * moveSpeed);
+            Velocity.X = Approach(Velocity.X, inputX * moveSpeed, acceleration * deltaTime);
+        }
+
+        if (keyboard.WasKeyJustPressed(Keys.F))
+        {
+            SetWantToInteract(true);
         }
     }
 
@@ -111,6 +217,28 @@ public class Player : PlayerCharacter
     {
         // Get the gamepad info for gamepad one.
         GamePadInfo gamePadOne = InputManager.Instance.GamePads[(int)PlayerIndex.One];
+    }
+
+    private float Approach(float value, float target, float amount)
+    {
+        if (value < target)
+            return Math.Min(value + amount, target);
+        else
+            return Math.Max(value - amount, target);
+    }
+
+    private void CheckInteraction()
+    {
+        mustShoot = false;
+        interaction.SetActive(false);
+        for (int i = 0; i < trigger.entities.Count; i++)
+        {
+            if (trigger.entities[i].GetType().GetInterface(InteractionType) == null)
+                continue;
+
+            mustShoot = true;
+            interaction.SetActive(true);
+        }
     }
 
     private void Jump()
@@ -130,5 +258,33 @@ public class Player : PlayerCharacter
     private void OnTriggerExit(Entity other)
     {
         floorEntities.Remove(other);
+    }
+
+    public override void InteractWithTarget()
+    {
+        if (trigger.entities.Count <= 0)
+        {
+            return;
+        }
+
+        float dist = 9999999;
+
+        for (int i = 0; i < trigger.entities.Count; i++)
+        {
+            if (trigger.entities[i].GetType().GetInterface(InteractionType) == null)
+                continue;
+
+            float tempDist = MathUtils.Dist(trigger.entities[i].Position, Position);
+            if (dist > tempDist)
+            {
+                dist = tempDist;
+                interactionTarget = (IInteractable)trigger.entities[i];
+            }
+        }
+
+        if (interactionTarget != null)
+        {
+            interactionTarget.OnInteract(this);
+        }
     }
 }

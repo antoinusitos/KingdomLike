@@ -1,17 +1,16 @@
-﻿using DefaultGame.UI;
+﻿using KingdomLike.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using MonoGameGum;
 using MonoGameLibrary;
+using MonoGameLibrary.Graphics;
 using MonoGameLibrary.Input;
 using MonoGameLibrary.Scenes;
 using MonoGameLibrary.Managers;
-using DefaultGame.Entities;
-using DefaultGame.Misc;
-using MonoGameLibrary.Graphics;
 using KingdomLike.Entities;
+using KingdomLike.Misc;
 
-namespace DefaultGame.Scenes;
+namespace KingdomLike.Scenes;
 
 public class GameScene : Scene
 {
@@ -40,11 +39,11 @@ public class GameScene : Scene
             int centerColumn = tilemap.Columns / 2;
         }
 
-        DefaultGameGameManager.Instance.player = new Player("player");
-        DefaultGameGameManager.Instance.player.LoadContent(Content);
-        DefaultGameGameManager.Instance.player.Initialize();
-        DefaultGameGameManager.Instance.player.Register();
-        DefaultGameGameManager.Instance.player.SetPosition(100, 75);
+        KingdomLikeGameManager.Instance.player = new Player("player");
+        KingdomLikeGameManager.Instance.player.LoadContent(Content);
+        KingdomLikeGameManager.Instance.player.Initialize();
+        KingdomLikeGameManager.Instance.player.Register();
+        KingdomLikeGameManager.Instance.player.SetPosition(100, 75);
 
         for (int i = 0; i < 20; i++)
         {
@@ -55,9 +54,37 @@ public class GameScene : Scene
             floor.SetPosition(i * 16, 116);
         }
 
+        for (int i = 0; i < 20; i++)
+        {
+            Floor floor = new Floor("Floor");
+            floor.LoadContent(Content);
+            floor.Initialize();
+            floor.Register();
+            floor.SetPosition(i * 16, 0);
+        }
+
+        Elevator elevator = new Elevator("Elevator");
+        elevator.LoadContent(Content);
+        elevator.Initialize();
+        elevator.Register();
+        elevator.SetPosition(140, -16);
+        elevator.SetDestination(new Vector2(140, 100));
+
+        BaseBuilding baseBuilding = new BaseBuilding("BaseBuilding");
+        baseBuilding.LoadContent(Content);
+        baseBuilding.Initialize();
+        baseBuilding.Register();
+        baseBuilding.SetPosition(140, 100);
+
+        Enemy enemy = new Enemy("Enemy");
+        enemy.LoadContent(Content);
+        enemy.Initialize();
+        enemy.Register();
+        enemy.SetPosition(250, 100);
+
         InitializeUI();
 
-        CameraManager.Instance.Camera.Position = new Vector2(DefaultGameGameManager.TileSize * 5 * DefaultGameGameManager.GameScale, DefaultGameGameManager.TileSize * 5 * DefaultGameGameManager.GameScale);
+        CameraManager.Instance.Camera.Position = new Vector2(KingdomLikeGameManager.TileSize * 5 * KingdomLikeGameManager.GameScale, KingdomLikeGameManager.TileSize * 5 * KingdomLikeGameManager.GameScale);
     }
 
     public override void LoadContent()
@@ -66,7 +93,7 @@ public class GameScene : Scene
         tilemap = RessourceManager.Instance.GetOrAddTilemap("images/tilemap-definition2.xml", out TilemapJSON tilemapJSON);
         if (tilemap != null)
         {
-            tilemap.Scale = new Vector2(DefaultGameGameManager.GameScale, DefaultGameGameManager.GameScale);
+            tilemap.Scale = new Vector2(KingdomLikeGameManager.GameScale, KingdomLikeGameManager.GameScale);
         }
     }
 
@@ -76,7 +103,7 @@ public class GameScene : Scene
         GumService.Default.Update(TimeManager.Instance.gameTime);
 
         // If the game is paused, do not continue
-        if (DefaultGameGameManager.Instance.paused)
+        if (KingdomLikeGameManager.Instance.paused)
         {
             return;
         }
@@ -86,6 +113,8 @@ public class GameScene : Scene
 
         // Check for gamepad input and handle it.
         CheckGamePadInput();
+
+        CameraManager.Instance.Camera.Position = KingdomLikeGameManager.Instance.player.Position;
     }
 
     private void CheckKeyboardInput()
@@ -96,7 +125,7 @@ public class GameScene : Scene
         // If the escape key is pressed, pause the game.
         if (keyboard.WasKeyJustPressed(Keys.Escape))
         {
-            DefaultGameGameManager.Instance.PauseGame();
+            KingdomLikeGameManager.Instance.PauseGame();
             return;
         }
 
@@ -135,7 +164,7 @@ public class GameScene : Scene
         // If the start button is pressed, pause the game
         if (gamePadOne.WasButtonJustPressed(Buttons.Start))
         {
-            DefaultGameGameManager.Instance.PauseGame();
+            KingdomLikeGameManager.Instance.PauseGame();
             return;
         }
     }

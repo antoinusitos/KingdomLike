@@ -1,4 +1,4 @@
-﻿using DefaultGame.Scenes;
+﻿using KingdomLike.Scenes;
 using Gum.Forms.Controls;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
@@ -13,7 +13,7 @@ using MonoGameLibrary.Managers;
 using MonoGameLibrary.UI;
 using System;
 
-namespace DefaultGame.UI;
+namespace KingdomLike.UI;
 public class TitleSceneUI : UIEntity
 {
     private const string TITLE_TEXT = "Kingdom Like";

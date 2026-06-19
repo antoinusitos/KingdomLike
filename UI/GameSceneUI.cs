@@ -1,5 +1,5 @@
-﻿using DefaultGame.Misc;
-using DefaultGame.Scenes;
+﻿using KingdomLike.Misc;
+using KingdomLike.Scenes;
 using Gum.DataTypes;
 using Gum.Forms.Controls;
 using Gum.Managers;
@@ -16,7 +16,7 @@ using MonoGameLibrary.Managers;
 using MonoGameLibrary.UI;
 using System;
 
-namespace DefaultGame.UI;
+namespace KingdomLike.UI;
 
 public class GameSceneUI : UIEntity
 {

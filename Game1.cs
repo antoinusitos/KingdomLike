@@ -1,16 +1,16 @@
-﻿using DefaultGame.Scenes;
+﻿using KingdomLike.Scenes;
 using Gum.Forms;
 using Gum.Forms.Controls;
 using MonoGameLibrary;
 using MonoGameGum;
 using MonoGameLibrary.Managers;
-using DefaultGame.Misc;
+using KingdomLike.Misc;
 
-namespace DefaultGame;
+namespace KingdomLike;
 
 public class Game1 : Core
 {
-    private DefaultGameGameManager gameManager;
+    private KingdomLikeGameManager gameManager;
 
     public Game1() : base("Kingdom Like (Leaf Engine)", 1920, 1080, false)
     {
@@ -21,7 +21,7 @@ public class Game1 : Core
     {
         base.Initialize();
 
-        gameManager = new DefaultGameGameManager();
+        gameManager = new KingdomLikeGameManager();
 
         // Initialize the Gum UI service
         InitializeGum();
