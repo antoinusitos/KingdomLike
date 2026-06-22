@@ -1,4 +1,4 @@
-﻿using DefaultGame.Rendering;
+﻿using KingdomLike.Rendering;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using MonoGameLibrary.Entities;

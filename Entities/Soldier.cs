@@ -4,14 +4,14 @@ using MonoGameLibrary.Graphics;
 using MonoGameLibrary.Managers;
 using KingdomLike.Misc;
 using KingdomLike.Interfaces;
-using System;
 using KingdomLike.Rendering;
+using System;
 using Microsoft.Xna.Framework;
 using MonoGameLibrary.Utils;
 
 namespace KingdomLike.Entities;
 
-public class Extortionist : Entity, IDamageable
+public class Soldier : Entity, IDamageable
 {
     public ShootingStats shootingStats;
 
@@ -27,7 +27,7 @@ public class Extortionist : Entity, IDamageable
     private float speed = 30;
     private float arrivedDist = 1;
 
-    public Extortionist(string name) : base(name)
+    public Soldier(string name) : base(name)
     {
         UsedBatch = ProjectBatchHandling.Instance.MainLayerBatch;
     }
@@ -55,7 +55,7 @@ public class Extortionist : Entity, IDamageable
 
         TextureAtlas atlas2 = RessourceManager.Instance.GetOrAddTextureAtlas("images/atlas-definition2.xml");
 
-        sprite = RessourceManager.Instance.GetOrAddSprite("friend", atlas2);
+        sprite = RessourceManager.Instance.GetOrAddSprite("soldier", atlas2);
     }
 
     public void TakeDamage(float damage, Entity fromEntity)

@@ -1,4 +1,4 @@
-﻿namespace DefaultGame.Utilities;
+﻿namespace KingdomLike.Utilities;
 
 public class Singleton<T> where T : new()
 {

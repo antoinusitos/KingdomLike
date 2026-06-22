@@ -112,6 +112,13 @@ public class GameScene : Scene
         playerBase.Register();
         playerBase.SetPosition(100, 100);
 
+        playerBase = new Base("Base");
+        playerBase.LoadContent(Content);
+        playerBase.Initialize();
+        playerBase.Register();
+        playerBase.SetPosition(110, 100);
+        playerBase.SetIsSoldierBase();
+
         KingdomLikeGameManager.instance.playerBase = playerBase;
 
         Extortionist extortionist = new Extortionist("Extortionist");

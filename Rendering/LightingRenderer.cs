@@ -1,9 +1,9 @@
-﻿using DefaultGame.Utilities;
+﻿using KingdomLike.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary;
 
-namespace DefaultGame.Rendering;
+namespace KingdomLike.Rendering;
 
 public class LightingRenderer : Singleton<LightingRenderer>
 {

@@ -1,4 +1,4 @@
-﻿using DefaultGame.Rendering;
+﻿using KingdomLike.Rendering;
 using KingdomLike.Misc;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;

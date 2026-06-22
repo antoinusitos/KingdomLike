@@ -1,4 +1,4 @@
-﻿using DefaultGame.Rendering;
+﻿using KingdomLike.Rendering;
 using KingdomLike.Misc;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -14,6 +14,8 @@ namespace KingdomLike.Entities;
 public class Base : Entity, IInteractable
 {
     private Trigger trigger;
+
+    private bool isSoldierBase = false;
 
     public Base(string name) : base(name)
     {
@@ -61,13 +63,28 @@ public class Base : Entity, IInteractable
     {
         if (KingdomLikeGameManager.instance.gold >= 5)
         {
-            Extortionist extortionist = new Extortionist("Extortionist");
-            extortionist.LoadContent(Core.Content);
-            extortionist.Initialize();
-            extortionist.Register();
-            extortionist.SetPosition(Position);
-
+            if (!isSoldierBase)
+            {
+                Extortionist extortionist = new Extortionist("Extortionist");
+                extortionist.LoadContent(Core.Content);
+                extortionist.Initialize();
+                extortionist.Register();
+                extortionist.SetPosition(Position);
+            }
+            else
+            {
+                Soldier soldier = new Soldier("Soldier");
+                soldier.LoadContent(Core.Content);
+                soldier.Initialize();
+                soldier.Register();
+                soldier.SetPosition(Position);
+            }
             KingdomLikeGameManager.instance.gold -= 5;
         }
+    }
+
+    public void SetIsSoldierBase()
+    {
+        isSoldierBase = true;
     }
 }

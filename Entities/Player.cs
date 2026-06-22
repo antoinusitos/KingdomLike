@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using MonoGameLibrary.Utils;
 using MonoGameLibrary.Interfaces;
 using System;
-using DefaultGame.Rendering;
+using KingdomLike.Rendering;
 using KingdomLike.Misc;
 
 namespace KingdomLike.Entities;

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using DefaultGame.Utilities;
+using KingdomLike.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary;
 using MonoGameLibrary.Managers;
 
-namespace DefaultGame.Rendering;
+namespace KingdomLike.Rendering;
 
 public class ProjectBatchHandling : Singleton<ProjectBatchHandling>
 {
