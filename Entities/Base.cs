@@ -1,4 +1,5 @@
-﻿using KingdomLike.Misc;
+﻿using DefaultGame.Rendering;
+using KingdomLike.Misc;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using MonoGameLibrary;
@@ -16,6 +17,7 @@ public class Base : Entity, IInteractable
 
     public Base(string name) : base(name)
     {
+        UsedBatch = ProjectBatchHandling.Instance.MainLayerBatch;
     }
 
     public override void Initialize()

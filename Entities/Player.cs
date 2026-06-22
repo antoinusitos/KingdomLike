@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using MonoGameLibrary.Utils;
 using MonoGameLibrary.Interfaces;
 using System;
+using DefaultGame.Rendering;
 using KingdomLike.Misc;
 
 namespace KingdomLike.Entities;
@@ -39,6 +40,7 @@ public class Player : PlayerCharacter
 
     public Player(string name) : base(name)
     {
+        UsedBatch = ProjectBatchHandling.Instance.MainLayerBatch;
     }
 
     public override void Initialize()

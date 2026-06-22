@@ -28,10 +28,16 @@ public class Game1 : Core
 
         // Initialize the Gum UI service
         InitializeGum();
+        RenderSystem.defaultBatch = false;
 
         // Start the game with the title scene.
         SceneManager.Instance.ChangeScene(new TitleScene());
         LightingRenderer.Initialize();
+    }
+
+    protected override void InitializeGraphicResources()
+    {
+        ProjectBatchHandling.Initialize();
     }
 
     protected override void LoadContent()
@@ -84,8 +90,7 @@ public class Game1 : Core
         GraphicsDevice.Viewport = viewport;
         
         // Begin the sprite batch to prepare for rendering.
-        SpriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: CameraManager.Instance.Camera.screenScaleMatrix, sortMode: SpriteSortMode.Deferred);
-        
+        ProjectBatchHandling.Instance.BeginRendering();
         SceneManager.Instance.ActiveScene.Draw(deltaTime);
         
         RenderSystem.Update(deltaTime);
@@ -93,8 +98,8 @@ public class Game1 : Core
         // LightingRenderer.Render();
         
         
-        // Always end the sprite batch when finished.
-        SpriteBatch.End();
+        ProjectBatchHandling.Instance.EndRendering();
+
 
         // LightingRenderer.DebugRender();
 
@@ -109,14 +114,4 @@ public class Game1 : Core
         BaseGameDraw(gameTime);
     }
 
-    // protected override void OnBeginSpriteBatch()
-    // {
-    //     LightingRenderer.BeginRender();
-    // }
-    //
-    // protected override void OnEndSpriteBatch()
-    // {
-    //     LightingRenderer.EndRender();
-    //     GraphicsDevice.SetRenderTarget(null);
-    // }
 }

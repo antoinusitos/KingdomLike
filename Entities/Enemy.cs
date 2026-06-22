@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Content;
+﻿using DefaultGame.Rendering;
+using Microsoft.Xna.Framework.Content;
 using MonoGameLibrary.Entities;
 using MonoGameLibrary.Shapes;
 using MonoGameLibrary.Misc;
@@ -18,6 +19,7 @@ public class Enemy : Entity, IDamageable
 
     public Enemy(string name) : base(name)
     {
+        UsedBatch = ProjectBatchHandling.Instance.MainLayerBatch;
     }
 
     public override void Initialize()

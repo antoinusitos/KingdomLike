@@ -1,12 +1,7 @@
-﻿using System;
-using System.Net.Mime;
-using DefaultGame.Misc;
-using DefaultGame.Utilities;
+﻿using DefaultGame.Utilities;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary;
-using MonoGameLibrary.Managers;
 
 namespace DefaultGame.Rendering;
 
