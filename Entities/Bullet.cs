@@ -1,4 +1,5 @@
-﻿using KingdomLike.Interfaces;
+﻿using DefaultGame.Rendering;
+using KingdomLike.Interfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using MonoGameLibrary;
@@ -25,6 +26,7 @@ public class Bullet : Entity
 
     public Bullet(string name) : base(name)
     {
+        UsedBatch = ProjectBatchHandling.Instance.MainLayerBatch;
     }
 
     public override void Initialize()

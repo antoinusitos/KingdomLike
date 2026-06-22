@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using DefaultGame.Rendering;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using MonoGameLibrary;
 using MonoGameLibrary.Entities;
@@ -17,6 +18,7 @@ public class Elevator : Entity, IInteractable
 
     public Elevator(string name) : base(name)
     {
+        UsedBatch = ProjectBatchHandling.Instance.MainLayerBatch;
     }
 
     public override void Initialize()

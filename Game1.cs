@@ -4,6 +4,9 @@ using Gum.Forms.Controls;
 using MonoGameLibrary;
 using MonoGameGum;
 using MonoGameLibrary.Managers;
+using DefaultGame.Rendering;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using KingdomLike.Misc;
 
 namespace KingdomLike;
@@ -25,13 +28,21 @@ public class Game1 : Core
 
         // Initialize the Gum UI service
         InitializeGum();
+        RenderSystem.defaultBatch = false;
 
         // Start the game with the title scene.
         SceneManager.Instance.ChangeScene(new TitleScene());
+        LightingRenderer.Initialize();
+    }
+
+    protected override void InitializeGraphicResources()
+    {
+        ProjectBatchHandling.Initialize();
     }
 
     protected override void LoadContent()
     {
+        LightingRenderer.LoadContent();
     }
 
     private void InitializeGum()
@@ -67,6 +78,40 @@ public class Game1 : Core
         GumService.Default.CanvasWidth = GraphicsDevice.PresentationParameters.BackBufferWidth / 4.0f;
         GumService.Default.CanvasHeight = GraphicsDevice.PresentationParameters.BackBufferHeight / 4.0f;
         GumService.Default.Renderer.Camera.Zoom = 4.0f;
+    }
+
+    protected override void Draw(GameTime gameTime)
+    {
+        float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+        // Clear the back buffer.
+        GraphicsDevice.Clear(Color.Black);
+
+        GraphicsDevice.Viewport = viewport;
+        
+        // Begin the sprite batch to prepare for rendering.
+        ProjectBatchHandling.Instance.BeginRendering();
+        SceneManager.Instance.ActiveScene.Draw(deltaTime);
+        
+        RenderSystem.Update(deltaTime);
+        ParticleSystem.Render(deltaTime);
+        // LightingRenderer.Render();
+        
+        
+        ProjectBatchHandling.Instance.EndRendering();
+
+
+        // LightingRenderer.DebugRender();
+
+        
+
+        if (UIManager.Instance.currentUIEntity != null)
+        {
+            UIManager.Instance.currentUIEntity.Render(SpriteBatch);
+        }
+
+        performanceManager.Render(SpriteBatch);
+        BaseGameDraw(gameTime);
     }
 
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using DefaultGame.Rendering;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using MonoGameLibrary.Entities;
 using MonoGameLibrary.Shapes;
@@ -12,6 +13,7 @@ public class Floor : Entity
 {
     public Floor(string name) : base(name)
     {
+        UsedBatch = ProjectBatchHandling.Instance.MainLayerBatch;
     }
 
     public override void Initialize()

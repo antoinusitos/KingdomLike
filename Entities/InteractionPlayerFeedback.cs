@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Content;
+﻿using DefaultGame.Rendering;
+using Microsoft.Xna.Framework.Content;
 using MonoGameLibrary.Entities;
 using MonoGameLibrary.Graphics;
 using MonoGameLibrary.Managers;
@@ -9,6 +10,7 @@ namespace KingdomLike.Entities
     {
         public InteractionPlayerFeedback(string name) : base(name)
         {
+            UsedBatch = ProjectBatchHandling.Instance.MainLayerBatch;
             canUpdate = true;
             canRender = true;
         }

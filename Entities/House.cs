@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Content;
+﻿using DefaultGame.Rendering;
+using Microsoft.Xna.Framework.Content;
 using MonoGameLibrary.Entities;
 using MonoGameLibrary.Graphics;
 using MonoGameLibrary.Managers;
@@ -9,6 +10,7 @@ public class House : Entity
 {
     public House(string name) : base(name)
     {
+        UsedBatch = ProjectBatchHandling.Instance.MainLayerBatch;
     }
 
     public override void Initialize()
