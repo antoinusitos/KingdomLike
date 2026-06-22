@@ -2,6 +2,7 @@
 using KingdomLike.UI;
 using MonoGameLibrary.Managers;
 using System;
+using System.Collections.Generic;
 
 namespace KingdomLike.Misc;
 
@@ -17,6 +18,14 @@ public class KingdomLikeGameManager : GameManager
     public bool paused = false;
 
     public Player player;
+
+    public List<House> houses = new List<House>();
+
+    public Base playerBase = null;
+
+    public int population = 0;
+
+    public int gold = 0;
 
     public KingdomLikeGameManager() : base()
     {

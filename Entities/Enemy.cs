@@ -42,7 +42,7 @@ public class Enemy : Entity, IDamageable
         shootingStats.canShoot = true;
         shootingStats.fireRate = 0.2f;
 
-        SetLayer(1);
+        SetLayer(2);
     }
 
     public override void LoadContent(ContentManager content)

@@ -37,6 +37,19 @@ public class GameSceneUI : UIEntity
     // The UI sound effect to play when a UI event is triggered.
     private SoundEffect uiSoundEffect;
 
+    // The position to draw the dungeon text at.
+    private Vector2 goldTextPos;
+
+    // The origin to set for the dungeon text.
+    private Vector2 goldTextOrigin;
+
+    private Vector2 goldTextScale;
+    private string textGold;
+
+    private Vector2 populationTextScale;
+    private string textPopulation;
+    private Vector2 populationTextPos;
+
     public GameSceneUI()
     {
         Rectangle RoomBounds = SceneManager.Instance.ActiveScene.RoomBounds;
@@ -55,14 +68,28 @@ public class GameSceneUI : UIEntity
         // Load the sound effect to play when ui actions occur.
         uiSoundEffect = RessourceManager.Instance.GetOrAddSoundEffect("audio/ui");
 
+        goldTextPos = new Vector2(10, 10);
+
+        populationTextPos = new Vector2(10, 40);
+
         // Create the texture atlas from the XML configuration file
         TextureAtlas _atlas2 = RessourceManager.Instance.GetOrAddTextureAtlas("images/atlas-definition2.xml");
     }
 
     public override void Render(SpriteBatch spriteBatch)
     {
+        textGold = "Gold : " + KingdomLikeGameManager.instance.gold;
+
+        textPopulation = "Population : " + KingdomLikeGameManager.instance.population;
+
         // Begin the sprite batch to prepare for rendering.
         Core.SpriteBatch.Begin(samplerState: SamplerState.PointClamp);
+
+        // Draw the title text on top of that at its original position
+        Core.SpriteBatch.DrawString(font, textGold, goldTextPos, Color.White, 0.0f, goldTextOrigin, 1.0f, SpriteEffects.None, 1.0f);
+
+        // Draw the title text on top of that at its original position
+        Core.SpriteBatch.DrawString(font, textPopulation, populationTextPos, Color.White, 0.0f, goldTextOrigin, 1.0f, SpriteEffects.None, 1.0f);
 
         // Always end the sprite batch when finished.
         Core.SpriteBatch.End();

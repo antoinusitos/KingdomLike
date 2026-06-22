@@ -63,7 +63,7 @@ public class Player : PlayerCharacter
         shootingStats.canShoot = true;
         shootingStats.fireRate = 0.2f;
 
-        SetLayer(1);
+        SetLayer(5);
 
         floorTrigger = new Trigger(entityName + " Floor Trigger");
         floorTrigger.LoadContent(Core.Content);
@@ -233,11 +233,14 @@ public class Player : PlayerCharacter
         interaction.SetActive(false);
         for (int i = 0; i < trigger.entities.Count; i++)
         {
-            if (trigger.entities[i].GetType().GetInterface(InteractionType) == null)
-                continue;
-
-            mustShoot = true;
-            interaction.SetActive(true);
+            if (trigger.entities[i].GetType().GetInterface(InteractionType) != null)
+            {
+                interaction.SetActive(true);
+            }
+            if (trigger.entities[i].GetType() == typeof(Enemy))
+            {
+                mustShoot = true;
+            }
         }
     }
 

@@ -45,7 +45,7 @@ public class GameScene : Scene
         KingdomLikeGameManager.Instance.player.Register();
         KingdomLikeGameManager.Instance.player.SetPosition(100, 75);
 
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < 40; i++)
         {
             Floor floor = new Floor("Floor");
             floor.LoadContent(Content);
@@ -54,7 +54,7 @@ public class GameScene : Scene
             floor.SetPosition(i * 16, 116);
         }
 
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < 40; i++)
         {
             Floor floor = new Floor("Floor");
             floor.LoadContent(Content);
@@ -67,20 +67,58 @@ public class GameScene : Scene
         elevator.LoadContent(Content);
         elevator.Initialize();
         elevator.Register();
-        elevator.SetPosition(140, -16);
-        elevator.SetDestination(new Vector2(140, 100));
+        elevator.SetPosition(350, -16);
+        elevator.SetDestination(new Vector2(350, 100));
 
         BaseBuilding baseBuilding = new BaseBuilding("BaseBuilding");
         baseBuilding.LoadContent(Content);
         baseBuilding.Initialize();
         baseBuilding.Register();
-        baseBuilding.SetPosition(140, 100);
+        baseBuilding.SetPosition(350, 100);
 
         Enemy enemy = new Enemy("Enemy");
         enemy.LoadContent(Content);
         enemy.Initialize();
         enemy.Register();
         enemy.SetPosition(250, 100);
+
+        House house = new House("House");
+        house.LoadContent(Content);
+        house.Initialize();
+        house.Register();
+        house.SetPosition(300, 100);
+
+        KingdomLikeGameManager.instance.houses.Add(house);
+
+        house = new House("House");
+        house.LoadContent(Content);
+        house.Initialize();
+        house.Register();
+        house.SetPosition(30, 100);
+
+        KingdomLikeGameManager.instance.houses.Add(house);
+
+        house = new House("House");
+        house.LoadContent(Content);
+        house.Initialize();
+        house.Register();
+        house.SetPosition(400, 100);
+
+        KingdomLikeGameManager.instance.houses.Add(house);
+
+        Base playerBase = new Base("Base");
+        playerBase.LoadContent(Content);
+        playerBase.Initialize();
+        playerBase.Register();
+        playerBase.SetPosition(100, 100);
+
+        KingdomLikeGameManager.instance.playerBase = playerBase;
+
+        Extortionist extortionist = new Extortionist("Extortionist");
+        extortionist.LoadContent(Content);
+        extortionist.Initialize();
+        extortionist.Register();
+        extortionist.SetPosition(playerBase.Position);
 
         InitializeUI();
 

@@ -10,11 +10,11 @@ using MonoGameLibrary.Misc;
 
 namespace KingdomLike.Entities;
 
-public class BaseBuilding : Entity, IInteractable
+public class Base : Entity, IInteractable
 {
     private Trigger trigger;
 
-    public BaseBuilding(string name) : base(name)
+    public Base(string name) : base(name)
     {
     }
 
@@ -42,7 +42,7 @@ public class BaseBuilding : Entity, IInteractable
         // Create the texture atlas from the XML configuration file
         TextureAtlas atlas2 = RessourceManager.Instance.GetOrAddTextureAtlas("images/atlas-definition2.xml");
 
-        sprite = RessourceManager.Instance.GetOrAddSprite("pickup", atlas2);
+        sprite = RessourceManager.Instance.GetOrAddSprite("base", atlas2);
     }
 
     public bool CanBeInteracted()
@@ -57,18 +57,15 @@ public class BaseBuilding : Entity, IInteractable
 
     public void OnInteract(Entity interactor)
     {
-        if (KingdomLikeGameManager.instance.gold >= 10)
+        if (KingdomLikeGameManager.instance.gold >= 5)
         {
-            Elevator elevator = new Elevator("Elevator");
-            elevator.LoadContent(Core.Content);
-            elevator.Initialize();
-            elevator.Register();
-            elevator.SetPosition(Position);
-            elevator.SetDestination(new Vector2(350, 0));
+            Extortionist extortionist = new Extortionist("Extortionist");
+            extortionist.LoadContent(Core.Content);
+            extortionist.Initialize();
+            extortionist.Register();
+            extortionist.SetPosition(Position);
 
-            KingdomLikeGameManager.instance.gold -= 10;
-
-            UnRegister();
+            KingdomLikeGameManager.instance.gold -= 5;
         }
     }
 }
