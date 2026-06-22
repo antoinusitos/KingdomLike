@@ -15,7 +15,9 @@ public class ProjectBatchHandling : Singleton<ProjectBatchHandling>
         Screen,
         World,
     }
-    
+
+    #region Sprite Batch
+
     private SpriteBatch backgroundBatch;
     private SpriteBatch mainLayerBatch;
     private SpriteBatch foregroundBatch;
@@ -39,14 +41,39 @@ public class ProjectBatchHandling : Singleton<ProjectBatchHandling>
     {
         get
         {
-            yield return (BackgroundBatch, BatchType.World, null);
-            yield return (MainLayerBatch, BatchType.World, null);
-            yield return (ForegroundBatch, BatchType.World, null);
-            yield return (LightBatch, BatchType.World, null);
+            yield return (BackgroundBatch, BatchType.World, backgroundBuffer);
+            yield return (MainLayerBatch, BatchType.World, mainLayerBuffer);
+            yield return (ForegroundBatch, BatchType.World, foregroundBuffer);
+            yield return (LightBatch, BatchType.World, lightBuffer);
         }
     }
 
+    #endregion
+
+    #region Render Targets
+
+    private RenderTarget2D lightBuffer;
+    private RenderTarget2D backgroundBuffer;
+    private RenderTarget2D mainLayerBuffer;
+    private RenderTarget2D foregroundBuffer;
+
+    public RenderTarget2D LightBuffer => lightBuffer;
+
+    public RenderTarget2D BackgroundBuffer => backgroundBuffer;
+
+    public RenderTarget2D MainLayerBuffer => mainLayerBuffer;
+
+    public RenderTarget2D ForegroundBuffer => foregroundBuffer;
+
+    #endregion
+
     public ProjectBatchHandling()
+    {
+        InitializeSpriteBatch();
+        InitializeRenderTarget();
+    }
+
+    private void InitializeSpriteBatch()
     {
         backgroundBatch = new SpriteBatch(Core.GraphicsDevice);
         mainLayerBatch = new SpriteBatch(Core.GraphicsDevice);
@@ -54,6 +81,26 @@ public class ProjectBatchHandling : Singleton<ProjectBatchHandling>
         lightBatch = new SpriteBatch(Core.GraphicsDevice);
         occupancyBatch = new SpriteBatch(Core.GraphicsDevice);
         screenBatch = new SpriteBatch(Core.GraphicsDevice);
+    }
+    
+    private void InitializeRenderTarget()
+    {
+        InitializeBuffer(ref lightBuffer);
+        InitializeBuffer(ref backgroundBuffer);
+        InitializeBuffer(ref mainLayerBuffer);
+        InitializeBuffer(ref foregroundBuffer);
+    }
+
+    private void InitializeBuffer(ref RenderTarget2D output)
+    {
+        Viewport viewport = Core.GraphicsDevice.Viewport;
+        output = new RenderTarget2D(
+            graphicsDevice: Core.GraphicsDevice,
+            width: viewport.Width,
+            height: viewport.Height,
+            mipMap: false,
+            preferredFormat: SurfaceFormat.Color, 
+            preferredDepthFormat: DepthFormat.None);
     }
 
     public void BeginRendering()
@@ -84,7 +131,7 @@ public class ProjectBatchHandling : Singleton<ProjectBatchHandling>
             Core.GraphicsDevice.SetRenderTarget(target);
             if (target != null)
             {
-                Core.GraphicsDevice.Clear(Color.Black);
+                Core.GraphicsDevice.Clear(Color.Transparent);
             }
             spriteBatch.End();
         }

@@ -13,6 +13,8 @@ namespace KingdomLike;
 
 public class Game1 : Core
 {
+    public static Effect FrameCompositeEffect { get; private set; }
+    
     private KingdomLikeGameManager gameManager;
 
     public Game1() : base("Kingdom Like (Leaf Engine)", 1920, 1080, false)
@@ -42,6 +44,7 @@ public class Game1 : Core
 
     protected override void LoadContent()
     {
+        FrameCompositeEffect = Content.Load<Effect>("effects/FrameComposite");
         LightingRenderer.LoadContent();
     }
 
@@ -95,15 +98,12 @@ public class Game1 : Core
         
         RenderSystem.Update(deltaTime);
         ParticleSystem.Render(deltaTime);
-        // LightingRenderer.Render();
-        
         
         ProjectBatchHandling.Instance.EndRendering();
 
-
-        // LightingRenderer.DebugRender();
-
-        
+        // DebugDrawRenderTargets();
+        UpdateFrameCompositeParameters();
+        DrawFrameComposite();
 
         if (UIManager.Instance.currentUIEntity != null)
         {
@@ -114,4 +114,31 @@ public class Game1 : Core
         BaseGameDraw(gameTime);
     }
 
+    private void DrawFrameComposite()
+    {
+        SpriteBatch.Begin(effect: FrameCompositeEffect);
+        Rectangle viewportBounds = GraphicsDevice.Viewport.Bounds;
+        SpriteBatch.Draw(ProjectBatchHandling.Instance.BackgroundBuffer, viewportBounds, Color.White);
+        SpriteBatch.End();
+    }
+
+    private void UpdateFrameCompositeParameters()
+    {
+        FrameCompositeEffect.Parameters["BackgroundTexture"].SetValue(ProjectBatchHandling.Instance.BackgroundBuffer);
+        FrameCompositeEffect.Parameters["MainLayerTexture"].SetValue(ProjectBatchHandling.Instance.MainLayerBuffer);
+        FrameCompositeEffect.Parameters["ForegroundTexture"].SetValue(ProjectBatchHandling.Instance.ForegroundBuffer);
+    }
+
+    private void DebugDrawRenderTargets()
+    {
+        var viewportBounds = GraphicsDevice.Viewport.Bounds;
+        var rect = new Rectangle(
+            x: viewportBounds.X, 
+            y: viewportBounds.Y, 
+            width: viewportBounds.Width / 2,
+            height: viewportBounds.Height / 2);
+        SpriteBatch.Begin();
+        SpriteBatch.Draw(ProjectBatchHandling.Instance.MainLayerBuffer, rect, Color.White);
+        SpriteBatch.End();
+    }
 }

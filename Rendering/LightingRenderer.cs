@@ -8,9 +8,10 @@ namespace KingdomLike.Rendering;
 public class LightingRenderer : Singleton<LightingRenderer>
 {
     private RenderTarget2D LightBuffer;
-    private SpriteBatch LightBatch;
-    private SpriteBatch ScreenBatch;
+    private SpriteBatch lightBatch;
     private static Texture2D logo;
+
+    public SpriteBatch LightBatch => lightBatch;
 
     public LightingRenderer()
     {
@@ -22,8 +23,7 @@ public class LightingRenderer : Singleton<LightingRenderer>
             mipMap: false,
             preferredFormat: SurfaceFormat.Color, 
             preferredDepthFormat: DepthFormat.None);
-        LightBatch = new SpriteBatch(Core.GraphicsDevice);
-        ScreenBatch = new SpriteBatch(Core.GraphicsDevice);
+        lightBatch = new SpriteBatch(Core.GraphicsDevice);
     }
     
     public static void LoadContent()
@@ -33,13 +33,13 @@ public class LightingRenderer : Singleton<LightingRenderer>
 
     public static void Render()
     {
-        Core.GraphicsDevice.SetRenderTarget(instance.LightBuffer);  
-        Core.GraphicsDevice.Clear(Color.AliceBlue);
-        
-        Instance.LightBatch.Begin();
-        Instance.LightBatch.Draw(logo, Vector2.Zero, Color.White);
-        Instance.LightBatch.End();
-        Core.GraphicsDevice.SetRenderTarget(null);
+        // Core.GraphicsDevice.SetRenderTarget(instance.LightBuffer);  
+        // Core.GraphicsDevice.Clear(Color.AliceBlue);
+        //
+        // Instance.LightBatch.Begin();
+        // Instance.LightBatch.Draw(logo, Vector2.Zero, Color.White);
+        // Instance.LightBatch.End();
+        // Core.GraphicsDevice.SetRenderTarget(null);
     }
 
     public static void DebugRender()
