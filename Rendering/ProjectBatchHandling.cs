@@ -119,7 +119,7 @@ public class ProjectBatchHandling : Singleton<ProjectBatchHandling>
                 spriteBatch.Begin();
                 break;
             case BatchType.World:
-                spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: CameraManager.Instance.Camera.screenScaleMatrix, sortMode: SpriteSortMode.Deferred);
+                spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: CameraManager.Instance.Camera.GetTransformation(Core.GraphicsDevice), sortMode: SpriteSortMode.Deferred);
                 break;
         }
     }

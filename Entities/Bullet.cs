@@ -97,6 +97,12 @@ public class Bullet : Entity
     public void SetOwner(Entity other)
     {
         owner = other;
-        trigger.IgnoreCollisions.Add(owner);
+        AddIgnoreCollision(other);
+    }
+
+    public override void AddIgnoreCollision(Entity entity)
+    {
+        trigger.IgnoreCollisions.Add(entity);
+        IgnoreCollisions.Add(entity);
     }
 }

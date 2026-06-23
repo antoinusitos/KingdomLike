@@ -9,6 +9,7 @@ using MonoGameLibrary.Scenes;
 using MonoGameLibrary.Managers;
 using KingdomLike.Entities;
 using KingdomLike.Misc;
+using ImGuiNET;
 
 namespace KingdomLike.Scenes;
 
@@ -116,7 +117,7 @@ public class GameScene : Scene
         playerBase.LoadContent(Content);
         playerBase.Initialize();
         playerBase.Register();
-        playerBase.SetPosition(110, 100);
+        playerBase.SetPosition(120, 100);
         playerBase.SetIsSoldierBase();
 
         KingdomLikeGameManager.instance.playerBase = playerBase;
@@ -130,6 +131,20 @@ public class GameScene : Scene
         InitializeUI();
 
         CameraManager.Instance.Camera.Position = new Vector2(KingdomLikeGameManager.TileSize * 5 * KingdomLikeGameManager.GameScale, KingdomLikeGameManager.TileSize * 5 * KingdomLikeGameManager.GameScale);
+
+        ImGuiManager.Instance.customGUI += CustomGUI;
+    }
+
+    public void CustomGUI()
+    {
+        ImGui.Begin("Game Scene Debug");
+
+        if (ImGui.Button("Add 10 Gold"))
+        {
+            KingdomLikeGameManager.instance.gold += 10;
+        }
+
+        ImGui.End();
     }
 
     public override void LoadContent()

@@ -25,7 +25,7 @@ public class KingdomLikeGameManager : GameManager
 
     public int population = 0;
 
-    public int gold = 0;
+    public int gold = 5;
 
     public KingdomLikeGameManager() : base()
     {

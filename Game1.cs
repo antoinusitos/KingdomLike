@@ -21,7 +21,6 @@ public class Game1 : Core
 
     public Game1() : base("Kingdom Like (Leaf Engine)", 1920, 1080, false)
     {
-
     }
 
     protected override void Initialize()
@@ -115,14 +114,7 @@ public class Game1 : Core
         performanceManager.Render(SpriteBatch);
         BaseGameDraw(gameTime);
 
-        // Draw debug UI
-        ImGuiRenderer.BeforeLayout(gameTime);
-
-        ImGui.Begin("Demo Window");
-        ImGui.Text("Hello world!");
-        ImGui.End();
-
-        ImGuiRenderer.AfterLayout();
+        ImGuiManager.Instance.Update(gameTime);
     }
 
     private void DrawFrameComposite()

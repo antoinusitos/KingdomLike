@@ -8,6 +8,9 @@ using KingdomLike.Rendering;
 using System;
 using Microsoft.Xna.Framework;
 using MonoGameLibrary.Utils;
+using MonoGameLibrary.Misc;
+using MonoGameLibrary;
+using System.Transactions;
 
 namespace KingdomLike.Entities;
 
@@ -22,10 +25,15 @@ public class Soldier : Entity, IDamageable
     Random r = new Random();
     public int random;
 
+    private Trigger trigger;
+
     private float life = 1;
 
     private float speed = 30;
     private float arrivedDist = 1;
+
+    private bool mustShoot = false;
+    private bool mustMove = true;
 
     public Soldier(string name) : base(name)
     {
@@ -43,6 +51,14 @@ public class Soldier : Entity, IDamageable
 
         shootingStats.canShoot = true;
         shootingStats.fireRate = 0.2f;
+
+        trigger = new Trigger(entityName + " Trigger");
+        trigger.LoadContent(Core.Content);
+        trigger.Initialize();
+        trigger.AttachTo(this);
+        trigger.SetRelativePosition(-trigger.Collider.Width + 52, -trigger.Collider.Height + 52);
+        trigger.SetPosition(position);
+        trigger.Register();
 
         SetLayer(2);
 
@@ -70,6 +86,15 @@ public class Soldier : Entity, IDamageable
     public override void Update(float deltaTime)
     {
         base.Update(deltaTime);
+
+        CheckInteraction();
+
+        CheckShoot(deltaTime);
+
+        if (!mustMove)
+        {
+            return;
+        }
 
         if (destinationHouse == null)
         {
@@ -102,6 +127,53 @@ public class Soldier : Entity, IDamageable
             }
 
             backToBase = !backToBase;
+        }
+    }
+
+    private void CheckShoot(float deltaTime)
+    {
+        if (!shootingStats.canShoot)
+        {
+            shootingStats.currentWait += deltaTime;
+            if (shootingStats.currentWait >= shootingStats.fireRate)
+            {
+                shootingStats.currentWait = 0;
+                shootingStats.canShoot = true;
+            }
+            return;
+        }
+
+        if (!mustShoot)
+        {
+            return;
+        }
+
+        shootingStats.canShoot = false;
+
+        Bullet bullet = new Bullet("Bullet");
+        bullet.LoadContent(Core.Content);
+        bullet.Initialize();
+        bullet.SetPosition(position);
+        bullet.Register();
+        bullet.SetOwner(this);
+        bullet.AddIgnoreCollision(trigger);
+        bullet.SetSpeed(7);
+        bullet.SetDirection(Vector2.UnitX);
+    }
+
+    private void CheckInteraction()
+    {
+        mustShoot = false;
+        mustMove = true;
+
+        for (int i = 0; i < trigger.entities.Count; i++)
+        {
+            if (trigger.entities[i].GetType() == typeof(Enemy))
+            {
+                mustShoot = true;
+                mustMove = false;
+                return;
+            }
         }
     }
 }
