@@ -37,6 +37,12 @@
 /processorParam:Quality=Best
 /build:audio/ui.wav
 
+#begin effects/AlphaDrawer.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:effects/AlphaDrawer.fx
+
 #begin effects/FrameComposite.fx
 /importer:EffectImporter
 /processor:EffectProcessor

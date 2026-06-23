@@ -64,6 +64,15 @@ public class ProjectBatchHandling : Singleton<ProjectBatchHandling>
     public RenderTarget2D MainLayerBuffer => mainLayerBuffer;
 
     public RenderTarget2D ForegroundBuffer => foregroundBuffer;
+    public int FrameCountInclusive => 3;
+
+    public Texture2D GetBuffer(int frameIndex) => frameIndex switch
+    {
+        0 => BackgroundBuffer,
+        1 => MainLayerBuffer,
+        2 => ForegroundBuffer,
+        3 => LightBuffer
+    };
 
     #endregion
 

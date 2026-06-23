@@ -15,6 +15,12 @@ namespace KingdomLike;
 
 public class Game1 : Core
 {
+    #region Debug
+
+    private bool debugDrawRenderTargets;
+    private int debugFrameIndex;
+    #endregion
+    
     public static Effect FrameCompositeEffect { get; private set; }
     
     private KingdomLikeGameManager gameManager;
@@ -102,10 +108,16 @@ public class Game1 : Core
         
         ProjectBatchHandling.Instance.EndRendering();
 
-        // DebugDrawRenderTargets();
         UpdateFrameCompositeParameters();
-        DrawFrameComposite();
-
+        if (debugDrawRenderTargets)
+        {
+            DebugDrawRenderTargets();
+        }
+        else
+        {
+            DrawFrameComposite();
+        }
+        
         if (UIManager.Instance.currentUIEntity != null)
         {
             UIManager.Instance.currentUIEntity.Render(SpriteBatch);
@@ -138,10 +150,10 @@ public class Game1 : Core
         var rect = new Rectangle(
             x: viewportBounds.X, 
             y: viewportBounds.Y, 
-            width: viewportBounds.Width / 2,
-            height: viewportBounds.Height / 2);
+            width: viewportBounds.Width,
+            height: viewportBounds.Height);
         SpriteBatch.Begin();
-        SpriteBatch.Draw(ProjectBatchHandling.Instance.MainLayerBuffer, rect, Color.White);
+        SpriteBatch.Draw(ProjectBatchHandling.Instance.GetBuffer(debugFrameIndex), rect, Color.White);
         SpriteBatch.End();
     }
 }
