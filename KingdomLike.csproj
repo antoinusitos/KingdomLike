@@ -26,6 +26,7 @@
     <PackageReference Include="Gum.MonoGame" Version="2026.4.5.1" />
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.*" />
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
+    <PackageReference Include="ImGui.NET" Version="1.91.6.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MonoGame\MonoGameLibrary\MonoGameLibrary.csproj" />

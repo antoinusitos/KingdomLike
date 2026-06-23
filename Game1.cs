@@ -1,4 +1,6 @@
-﻿using KingdomLike.Scenes;
+﻿using ImGuiNET;
+using ImGuiNET.SampleProgram.XNA;
+using KingdomLike.Scenes;
 using Gum.Forms;
 using Gum.Forms.Controls;
 using MonoGameLibrary;
@@ -112,6 +114,15 @@ public class Game1 : Core
 
         performanceManager.Render(SpriteBatch);
         BaseGameDraw(gameTime);
+
+        // Draw debug UI
+        ImGuiRenderer.BeforeLayout(gameTime);
+
+        ImGui.Begin("Demo Window");
+        ImGui.Text("Hello world!");
+        ImGui.End();
+
+        ImGuiRenderer.AfterLayout();
     }
 
     private void DrawFrameComposite()
