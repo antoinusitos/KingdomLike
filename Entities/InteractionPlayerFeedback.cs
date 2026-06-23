@@ -10,7 +10,7 @@ namespace KingdomLike.Entities
     {
         public InteractionPlayerFeedback(string name) : base(name)
         {
-            UsedBatch = ProjectBatchHandling.Instance.MainLayerBatch;
+            usedBatch = ProjectBatchHandling.Instance.MainLayerBatch;
             canUpdate = true;
             canRender = true;
         }

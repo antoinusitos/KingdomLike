@@ -40,7 +40,7 @@ public class Player : PlayerCharacter
 
     public Player(string name) : base(name)
     {
-        UsedBatch = ProjectBatchHandling.Instance.MainLayerBatch;
+        usedBatch = ProjectBatchHandling.Instance.MainLayerBatch;
     }
 
     public override void Initialize()

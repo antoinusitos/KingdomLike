@@ -29,7 +29,7 @@ public class Soldier : Entity, IDamageable
 
     public Soldier(string name) : base(name)
     {
-        UsedBatch = ProjectBatchHandling.Instance.MainLayerBatch;
+        usedBatch = ProjectBatchHandling.Instance.MainLayerBatch;
     }
 
     public override void Initialize()

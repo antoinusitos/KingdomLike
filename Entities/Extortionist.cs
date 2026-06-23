@@ -29,7 +29,7 @@ public class Extortionist : Entity, IDamageable
 
     public Extortionist(string name) : base(name)
     {
-        UsedBatch = ProjectBatchHandling.Instance.MainLayerBatch;
+        usedBatch = ProjectBatchHandling.Instance.MainLayerBatch;
     }
 
     public override void Initialize()

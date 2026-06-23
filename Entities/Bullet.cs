@@ -26,7 +26,7 @@ public class Bullet : Entity
 
     public Bullet(string name) : base(name)
     {
-        UsedBatch = ProjectBatchHandling.Instance.MainLayerBatch;
+        usedBatch = ProjectBatchHandling.Instance.MainLayerBatch;
     }
 
     public override void Initialize()
