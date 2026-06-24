@@ -42,6 +42,16 @@ public class Game1 : Core
         // Start the game with the title scene.
         SceneManager.Instance.ChangeScene(new TitleScene());
         LightingRenderer.Initialize();
+
+        ImGuiManager.Instance.customGUI += DebugFramePickerMenu;
+    }
+
+    private void DebugFramePickerMenu()
+    {
+        ImGui.Begin("Frame Choice");
+        ImGui.Checkbox("Draw Debug Frames", ref debugDrawRenderTargets);
+        ImGui.SliderInt("Frame Index", ref debugFrameIndex, 0, ProjectBatchHandling.Instance.FrameCountInclusive);
+        ImGui.End();
     }
 
     protected override void InitializeGraphicResources()
