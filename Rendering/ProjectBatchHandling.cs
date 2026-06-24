@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using KingdomLike.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -16,6 +17,26 @@ public class ProjectBatchHandling : Singleton<ProjectBatchHandling>
         World,
     }
 
+    public struct BatcherData
+    {
+        public SpriteBatch Batcher;
+        public BatchType BatchType;
+        public Effect Effect;
+        public RenderTarget2D Buffer;
+        public string Name;
+
+        public static implicit operator BatcherData((SpriteBatch, BatchType, Effect, RenderTarget2D, string) tuple) => new() {
+                Batcher = tuple.Item1,
+                BatchType = tuple.Item2,
+                Effect = tuple.Item3,
+                Buffer = tuple.Item4,
+                Name = tuple.Item5
+            };
+    }
+
+    public static Effect AlphaDrawerEffect { get; private set; }
+    
+    
     #region Sprite Batch
 
     private SpriteBatch backgroundBatch;
@@ -37,14 +58,15 @@ public class ProjectBatchHandling : Singleton<ProjectBatchHandling>
 
     public SpriteBatch ScreenBatch => screenBatch;
 
-    private IEnumerable<(SpriteBatch, BatchType, RenderTarget2D)> Batches
+    private IEnumerable<BatcherData> Batches
     {
         get
         {
-            yield return (BackgroundBatch, BatchType.World, backgroundBuffer);
-            yield return (MainLayerBatch, BatchType.World, mainLayerBuffer);
-            yield return (ForegroundBatch, BatchType.World, foregroundBuffer);
-            yield return (LightBatch, BatchType.World, lightBuffer);
+            yield return (BackgroundBatch, BatchType.World, null, backgroundBuffer, nameof(BackgroundBatch));
+            yield return (MainLayerBatch, BatchType.World, null, mainLayerBuffer, nameof(MainLayerBatch));
+            yield return (ForegroundBatch, BatchType.World, null, foregroundBuffer, nameof(ForegroundBatch));
+            yield return (LightBatch, BatchType.World, null, lightBuffer, nameof(LightBatch));
+            yield return (OccupancyBatch, BatchType.World, AlphaDrawerEffect, occupancyBuffer, nameof(OccupancyBatch));
         }
     }
 
@@ -56,6 +78,7 @@ public class ProjectBatchHandling : Singleton<ProjectBatchHandling>
     private RenderTarget2D backgroundBuffer;
     private RenderTarget2D mainLayerBuffer;
     private RenderTarget2D foregroundBuffer;
+    private RenderTarget2D occupancyBuffer;
 
     public RenderTarget2D LightBuffer => lightBuffer;
 
@@ -64,24 +87,30 @@ public class ProjectBatchHandling : Singleton<ProjectBatchHandling>
     public RenderTarget2D MainLayerBuffer => mainLayerBuffer;
 
     public RenderTarget2D ForegroundBuffer => foregroundBuffer;
-    public int FrameCountInclusive => 3;
+    public int FrameCountInclusive => Batches.Count() - 1;
 
-    public Texture2D GetBuffer(int frameIndex) => frameIndex switch
-    {
-        0 => BackgroundBuffer,
-        1 => MainLayerBuffer,
-        2 => ForegroundBuffer,
-        3 => LightBuffer
-    };
+    public BatcherData GetBatcherData(int frameIndex) => Batches.ElementAt(frameIndex);
+    
+    public Texture2D GetBuffer(int frameIndex) => Batches.ElementAt(frameIndex).Buffer;
 
     #endregion
 
     public ProjectBatchHandling()
     {
+
+    }
+    
+    public void LoadContent()
+    {
+        AlphaDrawerEffect = Core.Content.Load<Effect>("effects/AlphaDrawer");
+    }
+
+    public void InitializeResources()
+    {
         InitializeSpriteBatch();
         InitializeRenderTarget();
     }
-
+    
     private void InitializeSpriteBatch()
     {
         backgroundBatch = new SpriteBatch(Core.GraphicsDevice);
@@ -98,6 +127,7 @@ public class ProjectBatchHandling : Singleton<ProjectBatchHandling>
         InitializeBuffer(ref backgroundBuffer);
         InitializeBuffer(ref mainLayerBuffer);
         InitializeBuffer(ref foregroundBuffer);
+        InitializeBuffer(ref occupancyBuffer);
     }
 
     private void InitializeBuffer(ref RenderTarget2D output)
@@ -114,35 +144,40 @@ public class ProjectBatchHandling : Singleton<ProjectBatchHandling>
 
     public void BeginRendering()
     {
-        foreach (var (spriteBatch, batchType, _) in Batches)
+        foreach (BatcherData data in Batches)
         {
-            StartBatch(spriteBatch, batchType);
+            StartBatch(data);
         }
     }
 
-    private void StartBatch(SpriteBatch spriteBatch, BatchType batchType)
+    private void StartBatch(BatcherData data)
     {
-        switch (batchType)
+        switch (data.BatchType)
         {
             case BatchType.Screen:
-                spriteBatch.Begin();
+                data.Batcher.Begin(effect: data.Effect);
                 break;
             case BatchType.World:
-                spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: CameraManager.Instance.Camera.GetTransformation(Core.GraphicsDevice), sortMode: SpriteSortMode.Deferred);
+                data.Batcher.Begin(
+                    samplerState: SamplerState.PointClamp, 
+                    transformMatrix: CameraManager.Instance.Camera.GetTransformation(Core.GraphicsDevice), 
+                    sortMode: SpriteSortMode.Deferred,
+                    effect: data.Effect
+                    );
                 break;
         }
     }
 
     public void EndRendering()
     {
-        foreach (var (spriteBatch, _, target) in Batches)
+        foreach (BatcherData data in Batches)
         {
-            Core.GraphicsDevice.SetRenderTarget(target);
-            if (target != null)
+            Core.GraphicsDevice.SetRenderTarget(data.Buffer);
+            if (data.Buffer != null)
             {
                 Core.GraphicsDevice.Clear(Color.Transparent);
             }
-            spriteBatch.End();
+            data.Batcher.End();
         }
         Core.GraphicsDevice.SetRenderTarget(null);  
     }

@@ -40,4 +40,10 @@ public class Floor : Entity
 
         sprite = RessourceManager.Instance.GetOrAddSprite("wall", atlas2);
     }
+
+    public override void Render()
+    {
+        Render(usedBatch);
+        DrawSprite(ProjectBatchHandling.Instance.OccupancyBatch);
+    }
 }

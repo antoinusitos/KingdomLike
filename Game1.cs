@@ -31,6 +31,7 @@ public class Game1 : Core
 
     protected override void Initialize()
     {
+        ProjectBatchHandling.Initialize();
         base.Initialize();
 
         gameManager = new KingdomLikeGameManager();
@@ -44,6 +45,7 @@ public class Game1 : Core
         LightingRenderer.Initialize();
 
         ImGuiManager.Instance.customGUI += DebugFramePickerMenu;
+        
     }
 
     private void DebugFramePickerMenu()
@@ -51,18 +53,20 @@ public class Game1 : Core
         ImGui.Begin("Frame Choice");
         ImGui.Checkbox("Draw Debug Frames", ref debugDrawRenderTargets);
         ImGui.SliderInt("Frame Index", ref debugFrameIndex, 0, ProjectBatchHandling.Instance.FrameCountInclusive);
+        ImGui.Text(ProjectBatchHandling.Instance.GetBatcherData(debugFrameIndex).Name);
         ImGui.End();
     }
 
     protected override void InitializeGraphicResources()
     {
-        ProjectBatchHandling.Initialize();
+        ProjectBatchHandling.Instance.InitializeResources();
     }
 
     protected override void LoadContent()
     {
         FrameCompositeEffect = Content.Load<Effect>("effects/FrameComposite");
         LightingRenderer.LoadContent();
+        ProjectBatchHandling.Instance.LoadContent();
     }
 
     private void InitializeGum()
@@ -88,7 +92,7 @@ public class Game1 : Core
            new KeyCombo() { PushedKey = Microsoft.Xna.Framework.Input.Keys.Up });
 
         // Customize the tab UI navigation to also trigger when the keyboard
-        // Down arrow key is pushed.
+        // Down arrow key is pushed.d
         FrameworkElement.TabKeyCombos.Add(
            new KeyCombo() { PushedKey = Microsoft.Xna.Framework.Input.Keys.Down });
 
